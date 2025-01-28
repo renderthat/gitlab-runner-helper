@@ -31,6 +31,8 @@ if [ -n "$EXISTING_RELEASES" ]; then
   NEW_RELEASES=$(echo "$GLAB_RELEASES" | tr ' ' '\n' | grep -vFxf <(echo "$EXISTING_RELEASES" | tr ' ' '\n'))
   # Exit early if there are no new releases to process
   [ -z "$NEW_RELEASES" ] && { echo "No new releases to process. Exiting."; exit 0; }
+else
+  NEW_RELEASES=$GLAB_RELEASES
 fi
 set -e
 echo "New Releases: $NEW_RELEASES"
