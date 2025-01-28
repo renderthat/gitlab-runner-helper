@@ -1,0 +1,11 @@
+services:
+  manifest:
+    image: golang:bookworm
+    working_dir: /data
+    command: /data/generate-manifest.sh
+    stdin_open: true
+    tty: true
+    environment: 
+      PREPARE: "true"
+    volumes:
+      - ./:/data

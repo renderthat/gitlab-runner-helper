@@ -1,0 +1,46 @@
+name: Generate Manifest
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "15 1 * * *"
+  push:
+   branches:
+    - main
+
+env:
+  REPO_NAME: ${{ github.repository }}
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Get skopeo
+        run: sudo apt-get install skopeo -y
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 'stable'
+
+      - name: Get manifest-tool
+        run: go install github.com/estesp/manifest-tool/v2/cmd/manifest-tool@latest
+
+      - name: Get glab CLI
+        run: go install gitlab.com/gitlab-org/cli/cmd/glab@latest
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Generate and Push Manifest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./generate-manifest.sh
