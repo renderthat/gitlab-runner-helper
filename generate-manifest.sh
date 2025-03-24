@@ -22,7 +22,7 @@ EXISTING_RELEASES=$(git tag | sort -Vr)
 echo "Existing Releases: $EXISTING_RELEASES"
 
 # Fetch new releases from glab, sort them by version (latest first), and filter out existing releases
-GLAB_RELEASES=$(glab release list -R "gitlab-org/gitlab-runner" | tail -n +3 | awk '{ print $1 }' | sort -Vr)
+GLAB_RELEASES=$(glab release list -R "gitlab-org/gitlab-runner" | grep -E "^v.*" | awk '{ print $1 }' | sort -Vr)
 echo "Found Gitlab Releases: $GLAB_RELEASES"
 
 # Compare lists and determine new releases
