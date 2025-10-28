@@ -11,7 +11,7 @@ DEST_REPO="ghcr.io/$REPO_NAME"
 if [ "$PREPARE" ]; then
   apt update && apt install -y skopeo jq
   go install github.com/estesp/manifest-tool/v2/cmd/manifest-tool@latest
-  go install gitlab.com/gitlab-org/cli/cmd/glab@v1.72.0
+  git clone https://gitlab.com/gitlab-org/cli.git && cd cli && make build && make install && glab --version && cd .. && rm -r cli/ # workaround for issue: https://gitlab.com/gitlab-org/cli/-/issues/8019
 fi
 
 # Log environment and directory contents
