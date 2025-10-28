@@ -35,7 +35,7 @@ jobs:
         run: go install github.com/estesp/manifest-tool/v2/cmd/manifest-tool@latest
 
       - name: Get glab CLI
-        run: go install gitlab.com/gitlab-org/cli/cmd/glab@latest
+        run: git clone https://gitlab.com/gitlab-org/cli.git && cd cli && make build && make install
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
